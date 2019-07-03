@@ -25,13 +25,17 @@
 
         // fix all of the other places that use $(<...>) !!!???
         // form for visitor to write a tweet
-        const $writeTweetContainer = $('<form id="write-tweet-container"><div><input id="visitor" type="text" placeholder="your name"></input></div><div><input id="message" type="text" placeholder="tweet..."></input></div><div><button id="write-tweet-btn">write tweet</button></div></form>')[0];
+        const $writeTweetContainer = $('<div id="write-tweet-container"><form><div><input id="visitor" type="text" placeholder="your name"></input></div><div><input id="message" type="text" placeholder="tweet..."></input></div><div><button id="write-tweet-btn">write tweet</button></div></form></div>');
         const $visitor = $('#visitor');
         const $message = $('#message');
+        console.log('$write-tweet-container: ', $writeTweetContainer);
         const $writeTweetButton = $('#write-tweet-btn');
+        const $form = $($writeTweetContainer).children()[0];
         $body.append($writeTweetContainer);
+        $writeTweetContainer.append($form)
 
-
+        // console.log($($writeTweetContainer).children());
+        console.log('$visitor: ', $visitor);
         // flag for user filtering
         var userFilter = '';
         // button for reshowing all available tweets
@@ -42,12 +46,13 @@
         $body.append($container);
 
         // click handler on writing a tweet
-        $('#write-tweet').on('click', function() {
+        $('#write-tweet-btn').on('click', function(e) {
+          e.preventDefault();
           // debugger;
-          console.log($visitor);
-          visitor = $visitor.value;
-          console.log(visitor);
-          message = $message.value;
+          // console.log($('#visitor').val());
+          visitor = $('#visitor').val();
+          // console.log(visitor);
+          message = $('#message').val();
 
           writeTweet(message);
           sourceTweets();

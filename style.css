@@ -18,8 +18,9 @@ h1 {
 }
 
 /* Write Tweet */
-#write-tweet-container {
+#write-tweet-container > form {
   margin: 0 auto;
+  width: 125px;
 }
 
 /* Tweet */
