@@ -12,6 +12,9 @@
         var $body = $('body');
         $body.html('');
 
+        // button for reshowing all available tweets
+        $body.append('<button id="show-all-tweets" class="hide"><p>Show all tweets</p></button>')
+
         // periodically check if last index in streams.home is the the most recent one we have
           // if not
             // add new tweets from streams.home
@@ -25,7 +28,7 @@
             var $tweet = $('<div class="tweet-card"></div>');
             var $tweetCardFooter = $('<div class="tweet-card-footer"></div>');
             $tweet.append($tweetCardFooter);
-            $tweetCardFooter.append(`<p class="user">@${tweet.user}</p><p class="timestamp">${tweet.created_at}</p>`);
+            $tweetCardFooter.append(`<p class="user"><a href="">@${tweet.user}</a></p><p class="timestamp">${tweet.created_at}</p>`);
             $tweet.prepend(`<p class="tweet">${tweet.message}</p>`);
             $tweet.appendTo($body);
             index -= 1;
@@ -36,6 +39,34 @@
         setInterval(function() {
           sourceTweets();
         }, 10000);
+
+        // user can click on a username to see only that user's tweets
+        $('.user').on('click', function(e) {
+          e.preventDefault();
+          // get an array of all tweet nodes
+          let allTweets = $('div.tweet-card').get();
+          // filter to only nodes containing the usernames that were NOT clicked on
+          let tweetsToHide = allTweets.filter((tweetCard) => {
+            let user = tweetCard.querySelector('a').textContent;
+            return user !== e.target.textContent;
+            // console.log('user: ', user)
+            // console.log('target: ', e.target.textContent)
+          });
+          // hide these tweets
+          tweetsToHide.forEach((tweetCard) => {
+            $(tweetCard).toggleClass('hide');
+          });
+          // show show-all-tweets button
+          $('#show-all-tweets').toggleClass('hide');
+
+        });
+
+        $('#show-all-tweets').on('click', function() {
+          $('#show-all-tweets').toggleClass('hide');
+          $('.tweet-card').get().forEach((tweetCard) => {
+            $(tweetCard).removeClass('hide');
+          })
+        })
       });
 
     </script>
