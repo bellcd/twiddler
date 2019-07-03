@@ -1,7 +1,15 @@
 /* General */
  html, body {
    margin: 0;
+   font-family: 'Muli', sans-serif;
  }
+
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.8rem;
+  font-weight: 100;
+}
 
 #container {
   display: flex;
