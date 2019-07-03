@@ -12,8 +12,42 @@
         var $body = $('body');
         $body.html('');
 
+        // flag for user filtering
+        var userFilter = '';
         // button for reshowing all available tweets
-        $body.append('<button id="show-all-tweets" class="hide"><p>Show all tweets</p></button>')
+        $body.append('<button id="show-all-tweets"><p>Show all tweets</p></button>')
+
+        function addUserNameClickHandler(elem) {
+          // click handler on username, to see only that user's tweets
+          // Almost positive there's a better way to get the <a> element in this particular card!
+          $(elem).children('.tweet-card-footer').children().children().on('click', function(e) {
+            e.preventDefault();
+            let allTweets = $('div.tweet-card').get();
+            allTweets.forEach((tweetCard) => {
+              $(tweetCard).removeClass('opaque');
+            })
+            userFilter = e.target.textContent.slice(1);
+
+            let tweetsToHide = allTweets.filter((tweetCard) => {
+              let user = tweetCard.querySelector('a').textContent;
+              return user !== e.target.textContent;
+            });
+
+            tweetsToHide.forEach((tweetCard) => {
+              let user = tweetCard.querySelector('a').textContent;
+              $(tweetCard).addClass('opaque');
+            });
+          });
+        }
+
+        // click handler for show all tweets button
+        $('#show-all-tweets').on('click', function() {
+          console.log("you clidked it!")
+          userFilter = '';
+          $('.tweet-card').get().forEach((tweetCard) => {
+            $(tweetCard).removeClass('opaque');
+          })
+        })
 
         // periodically check if last index in streams.home is the the most recent one we have
           // if not
@@ -25,13 +59,19 @@
           index = streams.home.length - 1;
           while(index > lastIndex){
             var tweet = streams.home[index];
-            var $tweet = $('<div class="tweet-card"></div>');
+            var $tweet = $(`<div class="tweet-card"></div>`);
+            if (userFilter && userFilter !== tweet.user) {
+              $($tweet).addClass('opaque');
+            }
+
             var $tweetCardFooter = $('<div class="tweet-card-footer"></div>');
             $tweet.append($tweetCardFooter);
             $tweetCardFooter.append(`<p class="user"><a href="">@${tweet.user}</a></p><p class="timestamp">${tweet.created_at}</p>`);
             $tweet.prepend(`<p class="tweet">${tweet.message}</p>`);
             $tweet.appendTo($body);
             index -= 1;
+
+            addUserNameClickHandler($tweet);
           }
         }
 
@@ -39,34 +79,6 @@
         setInterval(function() {
           sourceTweets();
         }, 10000);
-
-        // user can click on a username to see only that user's tweets
-        $('.user').on('click', function(e) {
-          e.preventDefault();
-          // get an array of all tweet nodes
-          let allTweets = $('div.tweet-card').get();
-          // filter to only nodes containing the usernames that were NOT clicked on
-          let tweetsToHide = allTweets.filter((tweetCard) => {
-            let user = tweetCard.querySelector('a').textContent;
-            return user !== e.target.textContent;
-            // console.log('user: ', user)
-            // console.log('target: ', e.target.textContent)
-          });
-          // hide these tweets
-          tweetsToHide.forEach((tweetCard) => {
-            $(tweetCard).toggleClass('hide');
-          });
-          // show show-all-tweets button
-          $('#show-all-tweets').toggleClass('hide');
-
-        });
-
-        $('#show-all-tweets').on('click', function() {
-          $('#show-all-tweets').toggleClass('hide');
-          $('.tweet-card').get().forEach((tweetCard) => {
-            $(tweetCard).removeClass('hide');
-          })
-        })
       });
 
     </script>
