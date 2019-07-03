@@ -17,6 +17,10 @@
         // button for reshowing all available tweets
         $body.append('<button id="show-all-tweets"><p>Show all tweets</p></button>')
 
+        // container for responsive layout
+        const $container = $('<div id="container"></div>');
+        $body.append($container);
+
         function addUserNameClickHandler(elem) {
           // click handler on username, to see only that user's tweets
           // Almost positive there's a better way to get the <a> element in this particular card!
@@ -39,6 +43,8 @@
             });
           });
         }
+
+        // click handler only sometimes registering clicks ... DOM event listener breakpoint from dev tools only sometimes firing
 
         // click handler for show all tweets button
         $('#show-all-tweets').on('click', function() {
@@ -68,7 +74,7 @@
             $tweet.append($tweetCardFooter);
             $tweetCardFooter.append(`<p class="user"><a href="">@${tweet.user}</a></p><p class="timestamp">${tweet.created_at}</p>`);
             $tweet.prepend(`<p class="tweet">${tweet.message}</p>`);
-            $tweet.appendTo($body);
+            $tweet.appendTo($container);
             index -= 1;
 
             addUserNameClickHandler($tweet);
