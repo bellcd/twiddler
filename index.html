@@ -13,12 +13,24 @@
   <body>
     <script>
 
+      // global variables for writing tweets
+      var visitor, message;
+
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
 
         const $title = $('<h1>Twiddler</h1>');
         $body.append($title);
+
+        // fix all of the other places that use $(<...>) !!!???
+        // form for visitor to write a tweet
+        const $writeTweetContainer = $('<form id="write-tweet-container"><div><input id="visitor" type="text" placeholder="your name"></input></div><div><input id="message" type="text" placeholder="tweet..."></input></div><div><button id="write-tweet-btn">write tweet</button></div></form>')[0];
+        const $visitor = $('#visitor');
+        const $message = $('#message');
+        const $writeTweetButton = $('#write-tweet-btn');
+        $body.append($writeTweetContainer);
+
 
         // flag for user filtering
         var userFilter = '';
@@ -28,6 +40,19 @@
         // container for responsive layout
         const $container = $('<div id="container"></div>');
         $body.append($container);
+
+        // click handler on writing a tweet
+        $('#write-tweet').on('click', function() {
+          // debugger;
+          console.log($visitor);
+          visitor = $visitor.value;
+          console.log(visitor);
+          message = $message.value;
+
+          writeTweet(message);
+          sourceTweets();
+        })
+
 
         function addUserNameClickHandler(elem) {
           // click handler on username, to see only that user's tweets

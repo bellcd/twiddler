@@ -16,6 +16,10 @@ window.users = Object.keys(streams.users);
 // utility function for adding tweets to our data structures
 var addTweet = function(newTweet){
   var username = newTweet.user;
+
+  // believe this is necessary ...
+  streams.users[username] = [];
+
   streams.users[username].push(newTweet);
   streams.home.push(newTweet);
 };

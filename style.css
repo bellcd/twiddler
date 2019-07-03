@@ -17,6 +17,11 @@ h1 {
   flex-wrap: wrap;
 }
 
+/* Write Tweet */
+#write-tweet-container {
+  margin: 0 auto;
+}
+
 /* Tweet */
 .tweet-card {
   margin: 20px;
