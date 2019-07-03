@@ -23,7 +23,10 @@
           while(index > lastIndex){
             var tweet = streams.home[index];
             var $tweet = $('<div class="tweet-card"></div>');
-            $tweet.html(`<p class="tweet">${tweet.message}</p><p class="user">@${tweet.user}</p><p class="timestamp">${tweet.created_at}</p>`);
+            var $tweetCardFooter = $('<div class="tweet-card-footer"></div>');
+            $tweet.append($tweetCardFooter);
+            $tweetCardFooter.append(`<p class="user">@${tweet.user}</p><p class="timestamp">${tweet.created_at}</p>`);
+            $tweet.prepend(`<p class="tweet">${tweet.message}</p>`);
             $tweet.appendTo($body);
             index -= 1;
           }
