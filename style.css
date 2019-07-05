@@ -6,7 +6,6 @@
  }
 
 /* Menu */
-/* there's probably a fully responsive way of making the header stick to the top of the screen on scroll ... */
 #heading {
   position: sticky;
   width: 100%;
@@ -83,6 +82,7 @@ h1 {
     font-weight: 100;
 }
 
+/* Opacity Feature */
 @keyframes example {
   from {
     opacity: 1;

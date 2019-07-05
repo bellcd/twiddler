@@ -12,7 +12,6 @@
   </head>
   <body>
     <script>
-
       // global variables for writing tweets
       var visitor, message;
 
@@ -29,26 +28,20 @@
         const $menuContainer = $('<div id="menu-container"></div>');
         $heading.append($menuContainer);
 
-        // fix all of the other places that use $(<...>) !!!???
         // form for visitor to write a tweet
         const $formContainer = $('<div id="form-container"><form><div><input id="visitor" type="text" placeholder="your name"></input></div><div><input id="message" type="text" placeholder="tweet..."></input></div><div><button id="write-tweet-btn">write tweet</button></div></form></div>');
         const $visitor = $('#visitor');
         const $message = $('#message');
-        console.log('$form-container: ', $formContainer);
         const $writeTweetButton = $('#write-tweet-btn');
-        const $form = $($formContainer).children()[0];
+        const $form = $($formContainer).children().eq(0);
         $menuContainer.append($formContainer);
         $formContainer.append($form)
 
         // button for reshowing all available tweets
         $menuContainer.append('<button id="show-all-tweets"><p>Show all tweets</p></button>')
 
-        // console.log($($formContainer).children());
-        console.log('$visitor: ', $visitor);
         // flag for user filtering
         var userFilter = '';
-
-
 
         // container for responsive layout
         const $container = $('<div id="container"></div>');
@@ -57,23 +50,18 @@
         // click handler on writing a tweet
         $('#write-tweet-btn').on('click', function(e) {
           e.preventDefault();
-          // debugger;
-          // console.log($('#visitor').val());
           visitor = $('#visitor').val();
-          // console.log(visitor);
           message = $('#message').val();
-
           writeTweet(message);
           sourceTweets();
         })
 
-
+        // click handler on @username, to see only that user's tweets
         function addUserNameClickHandler(elem) {
-          // click handler on username, to see only that user's tweets
-          // Almost positive there's a better way to get the <a> element in this particular card!
-          $(elem).children('.tweet-card-footer').children().children().on('click', function(e) {
+          $(elem).find('a').on('click', function(e) {
             e.preventDefault();
             let allTweets = $('div.tweet-card').get();
+
             allTweets.forEach((tweetCard) => {
               $(tweetCard).removeClass('opaque');
             })
@@ -91,16 +79,13 @@
           });
         }
 
-        // click handler only sometimes registering clicks ... DOM event listener breakpoint from dev tools only sometimes firing
-
         // click handler for show all tweets button
         $('#show-all-tweets').on('click', function() {
-          console.log("you clidked it!")
           userFilter = '';
-          $('.tweet-card').get().forEach((tweetCard) => {
+          $('.tweet-card').each((i, tweetCard) => {;
             $(tweetCard).removeClass('opaque');
-          })
-        })
+          });
+        });
 
         // periodically check if last index in streams.home is the the most recent one we have
           // if not
@@ -117,6 +102,7 @@
               $($tweet).addClass('opaque');
             }
 
+            // changing timestamp display to __ seconds ago
             moment.updateLocale('en', {
               relativeTime: {
                 past: '%s ago',
@@ -137,6 +123,7 @@
         }
 
         sourceTweets();
+
         setInterval(function() {
           sourceTweets();
         }, 10000);
