@@ -20,26 +20,35 @@
         var $body = $('body');
         $body.html('');
 
+        const $heading = $('<div id="heading"></div>');
+        $body.append($heading);
+
         const $title = $('<h1>Twiddler</h1>');
-        $body.append($title);
+        $heading.append($title);
+
+        const $menuContainer = $('<div id="menu-container"></div>');
+        $heading.append($menuContainer);
 
         // fix all of the other places that use $(<...>) !!!???
         // form for visitor to write a tweet
-        const $writeTweetContainer = $('<div id="write-tweet-container"><form><div><input id="visitor" type="text" placeholder="your name"></input></div><div><input id="message" type="text" placeholder="tweet..."></input></div><div><button id="write-tweet-btn">write tweet</button></div></form></div>');
+        const $formContainer = $('<div id="form-container"><form><div><input id="visitor" type="text" placeholder="your name"></input></div><div><input id="message" type="text" placeholder="tweet..."></input></div><div><button id="write-tweet-btn">write tweet</button></div></form></div>');
         const $visitor = $('#visitor');
         const $message = $('#message');
-        console.log('$write-tweet-container: ', $writeTweetContainer);
+        console.log('$form-container: ', $formContainer);
         const $writeTweetButton = $('#write-tweet-btn');
-        const $form = $($writeTweetContainer).children()[0];
-        $body.append($writeTweetContainer);
-        $writeTweetContainer.append($form)
+        const $form = $($formContainer).children()[0];
+        $menuContainer.append($formContainer);
+        $formContainer.append($form)
 
-        // console.log($($writeTweetContainer).children());
+        // button for reshowing all available tweets
+        $menuContainer.append('<button id="show-all-tweets"><p>Show all tweets</p></button>')
+
+        // console.log($($formContainer).children());
         console.log('$visitor: ', $visitor);
         // flag for user filtering
         var userFilter = '';
-        // button for reshowing all available tweets
-        $body.append('<button id="show-all-tweets"><p>Show all tweets</p></button>')
+
+
 
         // container for responsive layout
         const $container = $('<div id="container"></div>');
@@ -111,7 +120,6 @@
             moment.updateLocale('en', {
               relativeTime: {
                 past: '%s ago',
-                // mm: '%d minutes'
                 ss: '%d seconds'
               }
             });
